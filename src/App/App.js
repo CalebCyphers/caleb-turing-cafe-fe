@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
+import '../ResyCard/ResyCard.css';
+import { getReservations } from '../fetcher.js';
+import ResyCard from '../ResyCard/ResyCard.js';
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      reservations: []
+    }
+  }
+
+  componentDidMount() {
+    getReservations()
+      .then(response => this.setState({reservations: response}))
+      .catch(err => console.log(err))
+  }
+
   render() {
     return (
       <div className="App">
@@ -10,7 +26,9 @@ class App extends Component {
 
         </div>
         <div className='resy-container'>
-          
+          {this.state.reservations.map(reservation => {
+            return <ResyCard reservation={reservation}/>
+          })}
         </div>
       </div>
     )
